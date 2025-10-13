@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>46.com Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">46.com</h1>
+        </header>
+        
+        <!-- Top Banner Ad -->
+        <div class="ad-container">
+            <div id="adsterra-banner-top" class="ad-banner"></div>
+        </div>
+        
+        <main class="main-content">
+            <div id="videoGrid" class="video-grid">
+                <!-- Videos will be loaded here dynamically -->
+            </div>
+            
+            <!-- In-feed Ad after first few videos -->
+            <div id="adsterra-infeed" class="ad-infeed"></div>
+            
+            <div id="loading" class="loading">Loading videos...</div>
+        </main>
+        
+        <!-- Bottom Banner Ad -->
+        <div class="ad-container">
+            <div id="adsterra-banner-bottom" class="ad-banner"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+    
+    <script src="configure.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Adsterra Ads -->
+    <script>
+        // Load ads after page content
+        window.addEventListener('load', function() {
+            // Top Banner Ad
+            var el = document.createElement("script");
+            el.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-banner-top").appendChild(el);
+            
+            // Bottom Banner Ad
+            var el2 = document.createElement("script");
+            el2.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-banner-bottom").appendChild(el2);
+            
+            // In-feed Ad
+            var el3 = document.createElement("script");
+            el3.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-infeed").appendChild(el3);
+        });
+    </script>
+</body>
+</html>

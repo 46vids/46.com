@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>46.com|Video Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <button id="backButton" class="back-button">← Back</button>
+            <h1 class="logo">46.com</h1>
+        </header>
+        
+        <!-- Top Banner Ad -->
+        <div class="ad-container">
+            <div id="adsterra-banner-top" class="ad-banner"></div>
+        </div>
+        
+        <main class="video-player-container">
+            <div class="video-wrapper">
+                <video id="videoPlayer" controls autoplay>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <!-- Video Ad below player -->
+            <div class="ad-container">
+                <div id="adsterra-video-ad" class="ad-video"></div>
+            </div>
+        </main>
+        
+        <!-- Bottom Banner Ad -->
+        <div class="ad-container">
+            <div id="adsterra-banner-bottom" class="ad-banner"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- Adsterra Ads -->
+    <script>
+        window.addEventListener('load', function() {
+            // Top Banner Ad
+            var el = document.createElement("script");
+            el.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-banner-top").appendChild(el);
+            
+            // Bottom Banner Ad
+            var el2 = document.createElement("script");
+            el2.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-banner-bottom").appendChild(el2);
+            
+            // Video Ad
+            var el3 = document.createElement("script");
+            el3.src = "https://www.profitablecpmgate.com/123456/invoke.js";
+            document.getElementById("adsterra-video-ad").appendChild(el3);
+        });
+    </script>
+</body>
+</html>
