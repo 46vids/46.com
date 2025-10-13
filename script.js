@@ -6,33 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         initVideoGallery();
     }
-    
-    // Initialize ads after a short delay to ensure page is loaded
-    setTimeout(initializeAds, 1000);
 });
-
-// Ad initialization function
-function initializeAds() {
-    // Adsterra ads are already loaded in the HTML
-    // This function can be used for additional ad tracking or optimization
-    
-    console.log('Ads initialized');
-    
-    // Track ad visibility (basic implementation)
-    const adContainers = document.querySelectorAll('.ad-banner, .ad-infeed, .ad-video');
-    adContainers.forEach(container => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    console.log('Ad container is visible');
-                    // You can trigger ad refresh or tracking here
-                }
-            });
-        });
-        
-        observer.observe(container);
-    });
-}
 
 // Video Gallery functionality
 function initVideoGallery() {
@@ -41,7 +15,8 @@ function initVideoGallery() {
     
     if (!videoGrid) return;
     
-    loadVideosFromFirebase();
+    // Load sample videos instead of Firebase
+    loadSampleVideos();
 }
 
 // Video Player functionality
@@ -66,49 +41,38 @@ function initVideoPlayer() {
         // Add fade-in animation when video loads
         videoPlayer.addEventListener('loadeddata', function() {
             videoPlayer.classList.add('fade-in');
-            
-            // Trigger ad refresh when video starts playing
-            videoPlayer.addEventListener('play', function() {
-                console.log('Video started playing - potential ad refresh point');
-            });
         });
     }
 }
 
-// Firebase functions
-function loadVideosFromFirebase() {
+// Load sample videos (replace with your actual video URLs)
+function loadSampleVideos() {
     const videoGrid = document.getElementById('videoGrid');
     const loadingElement = document.getElementById('loading');
     
-    // Reference to videos in database
-    const videosRef = database.ref('videos');
+    // Sample videos - REPLACE THESE WITH YOUR ACTUAL VIDEO URLs
+    const sampleVideos = [
+        {
+            videoUrl: 'https://www.xvideos.com/video.oidicfveaea/43876267/0/stuck_on_the_stairs_her_perverted_stepbro_takes_advantage_and_fucks_bellattrix.mp4',
+            thumbnailUrl: 'https://example.com/thumb1.jpg'
+        },
+        {
+            videoUrl: 'https://example.com/video2.mp4', 
+            thumbnailUrl: 'https://example.com/thumb2.jpg'
+        },
+        {
+            videoUrl: 'https://example.com/video3.mp4',
+            thumbnailUrl: 'https://example.com/thumb3.jpg'
+        }
+    ];
     
-    videosRef.orderByChild('timestamp').once('value')
-        .then((snapshot) => {
-            const videos = [];
-            snapshot.forEach((childSnapshot) => {
-                videos.push(childSnapshot.val());
-            });
-            
-            // Reverse to show newest first
-            videos.reverse();
-            
-            displayVideos(videos);
-            
-            // Hide loading
-            if (loadingElement) {
-                loadingElement.style.display = 'none';
-            }
-            
-            // Refresh ads after videos are loaded
-            setTimeout(initializeAds, 500);
-        })
-        .catch((error) => {
-            console.error('Error loading videos:', error);
-            if (loadingElement) {
-                loadingElement.textContent = 'Error loading videos';
-            }
-        });
+    // Display the sample videos
+    displayVideos(sampleVideos);
+    
+    // Hide loading
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
 }
 
 function displayVideos(videos) {
@@ -149,7 +113,6 @@ function createVideoElement(video, index) {
 
 // Add hover effects
 document.addEventListener('DOMContentLoaded', function() {
-    // Add hover effects to interactive elements
     const interactiveElements = document.querySelectorAll('.video-item, .back-button');
     
     interactiveElements.forEach(element => {
