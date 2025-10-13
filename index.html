@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>46.com Gallery</title>
+    <title>46.com|Vids</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,9 +12,20 @@
             <h1 class="logo">46.com</h1>
         </header>
         
-        <!-- Top Banner Ad -->
+        <!-- Top Banner Ad - REPLACE THIS WITH YOUR ADSTERRA CODE -->
         <div class="ad-container">
-            <div id="adsterra-banner-top" class="ad-banner"></div>
+            <!-- PASTE YOUR 728x90 BANNER CODE HERE -->
+            
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'e4f9159a12a85faf59ce75cb361ad8f5',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/YOUR_728x90_CODE_HERE/invoke.js"></script>
         </div>
         
         <main class="main-content">
@@ -22,16 +33,24 @@
                 <!-- Videos will be loaded here dynamically -->
             </div>
             
-            <!-- In-feed Ad after first few videos -->
-            <div id="adsterra-infeed" class="ad-infeed"></div>
+            <!-- Bottom Banner Ad - REPLACE THIS WITH YOUR ADSTERRA CODE -->
+            <div class="ad-container">
+                <!-- PASTE YOUR 320x50 BANNER CODE HERE -->
+                
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '0fbcc99b4013586b4c6be2f800333dad',
+                        'format' : 'iframe',
+                        'height' : 50,
+                        'width' : 320,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/YOUR_320x50_CODE_HERE/invoke.js"></script>
+            </div>
             
             <div id="loading" class="loading">Loading videos...</div>
         </main>
-        
-        <!-- Bottom Banner Ad -->
-        <div class="ad-container">
-            <div id="adsterra-banner-bottom" class="ad-banner"></div>
-        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -41,28 +60,5 @@
     
     <script src="configure.js"></script>
     <script src="script.js"></script>
-    
-    <!-- Adsterra Ads -->
-
-    <script type="text/javascript"> 	atOptions = { 		'key' : 'e4f9159a12a85faf59ce75cb361ad8f5', 		'format' : 'iframe', 		'height' : 90, 		'width' : 728, 		'params' : {} 	}; </script> <script type="text/javascript" src="//www.highperformanceformat.com/e4f9159a12a85faf59ce75cb361ad8f5/invoke.js"></script>
-    <script>
-        // Load ads after page content
-        window.addEventListener('load', function() {
-            // Top Banner Ad
-            var el = document.createElement("script");
-            el.src = "https://www.profitablecpmgate.com/123456/invoke.js";
-            document.getElementById("adsterra-banner-top").appendChild(el);
-            
-            // Bottom Banner Ad
-            var el2 = document.createElement("script");
-            el2.src = "https://www.profitablecpmgate.com/27745422/invoke.js";
-            document.getElementById("adsterra-banner-bottom").appendChild(el2);
-            
-            // In-feed Ad
-            var el3 = document.createElement("script");
-            el3.src = "https://www.profitablecpmgate.com/123456/invoke.js";
-            document.getElementById("adsterra-infeed").appendChild(el3);
-        });
-    </script>
 </body>
 </html>
