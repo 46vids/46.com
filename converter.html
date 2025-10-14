@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedGIFs MP4 Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .url-box {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            margin-top: 10px;
+            width: auto;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+        
+        .success {
+            background: #d1edff;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 RedGIFs to MP4 Converter</h1>
+        
+        <div class="input-group">
+            <label for="redgifsUrl">Paste RedGIFs URL:</label>
+            <input type="text" id="redgifsUrl" 
+                   placeholder="https://www.redgifs.com/watch/loathsomedisgustingtortoise" 
+                   value="https://www.redgifs.com/watch/loathsomedisgustingtortoise">
+        </div>
+        
+        <button onclick="convertToMP4()">Convert to MP4</button>
+        
+        <div id="loading" class="loading hidden">
+            ⏳ Converting... Please wait
+        </div>
+        
+        <div id="result" class="result hidden">
+            <h3>✅ Conversion Successful!</h3>
+            <p><strong>Direct MP4 URL:</strong></p>
+            <div id="mp4Url" class="url-box"></div>
+            <button class="copy-btn" onclick="copyToClipboard()">📋 Copy MP4 URL</button>
+            
+            <p><strong>Thumbnail URL:</strong></p>
+            <div id="thumbUrl" class="url-box"></div>
+            <button class="copy-btn" onclick="copyThumbToClipboard()">📋 Copy Thumbnail URL</button>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #e7f3ff; border-radius: 6px;">
+                <strong>💡 For Your Firebase Database:</strong>
+                <pre id="jsonOutput" style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px; overflow-x: auto;"></pre>
+            </div>
+        </div>
+        
+        <div id="error" class="result error hidden">
+            <h3>❌ Conversion Failed</h3>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        async function convertToMP4() {
+            const redgifsUrl = document.getElementById('redgifsUrl').value.trim();
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const error = document.getElementById('error');
+            
+            // Hide previous results
+            result.classList.add('hidden');
+            error.classList.add('hidden');
+            loading.classList.remove('hidden');
+            
+            if (!redgifsUrl) {
+                showError('Please enter a RedGIFs URL');
+                return;
+            }
+            
+            try {
+                // Extract GIF ID from URL
+                const gifId = extractGifId(redgifsUrl);
+                if (!gifId) {
+                    throw new Error('Invalid RedGIFs URL format');
+                }
+                
+                // Fetch from RedGIFs API
+                const apiUrl = `https://api.redgifs.com/v2/gifs/${gifId}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch from RedGIFs API');
+                }
+                
+                const data = await response.json();
+                
+                if (data.gif && data.gif.urls) {
+                    const mp4Url = data.gif.urls.hd || data.gif.urls.sd;
+                    const thumbUrl = data.gif.urls.poster || data.gif.urls.thumbnail;
+                    
+                    if (mp4Url) {
+                        showSuccess(mp4Url, thumbUrl, gifId);
+                    } else {
+                        throw new Error('No MP4 URL found in response');
+                    }
+                } else {
+                    throw new Error('Invalid API response format');
+                }
+                
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+        
+        function extractGifId(url) {
+            // Extract ID from various RedGIFs URL formats
+            const match = url.match(/watch\/([a-zA-Z0-9]+)/);
+            return match ? match[1] : null;
+        }
+        
+        function showSuccess(mp4Url, thumbUrl, gifId) {
+            const result = document.getElementById('result');
+            const mp4UrlElement = document.getElementById('mp4Url');
+            const thumbUrlElement = document.getElementById('thumbUrl');
+            const jsonOutput = document.getElementById('jsonOutput');
+            
+            mp4UrlElement.textContent = mp4Url;
+            thumbUrlElement.textContent = thumbUrl;
+            
+            // Generate JSON for Firebase
+            const firebaseJson = {
+                videoUrl: mp4Url,
+                thumbnailUrl: thumbUrl,
+                title: gifId
+            };
+            
+            jsonOutput.textContent = JSON.stringify(firebaseJson, null, 2);
+            
+            result.classList.remove('hidden');
+            result.classList.add('success');
+        }
+        
+        function showError(message) {
+            const error = document.getElementById('error');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.textContent = message;
+            error.classList.remove('hidden');
+        }
+        
+        function copyToClipboard() {
+            const mp4Url = document.getElementById('mp4Url').textContent;
+            navigator.clipboard.writeText(mp4Url).then(() => {
+                alert('MP4 URL copied to clipboard!');
+            });
+        }
+        
+        function copyThumbToClipboard() {
+            const thumbUrl = document.getElementById('thumbUrl').textContent;
+            navigator.clipboard.writeText(thumbUrl).then(() => {
+                alert('Thumbnail URL copied to clipboard!');
+            });
+        }
+        
+        // Auto-convert if URL is already filled
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('redgifsUrl');
+            if (urlInput.value) {
+                setTimeout(() => convertToMP4(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>
