@@ -135,11 +135,10 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 70vh;
-    padding: 20px;
+    padding: 10px;
 }
 
 .video-wrapper {
-    max-width: 800px;
     width: 100%;
     background: #000000;
     border-radius: 12px;
@@ -237,4 +236,12 @@ body {
     .ad-banner {
         height: 50px;
     }
+}
+
+.video-timestamp {
+    padding: 0 5px 5px;
+    font-size: 0.85rem;
+    color: #bbb;
+    font-style: italic;
+    margin-top: 5px;
 }
